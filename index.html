@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://lchqaaapvdthqkukpksm.supabase.co; img-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Learning Engine · Povolení přístupu</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="vendor/supabase-2.117.3.js"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<main>
+<header><span class="mark" aria-hidden="true">LE</span><span>Learning Engine <small>DEV</small></span></header>
+<p class="eyebrow">VAŠE POZNÁMKY. VÁŠ SOUHLAS.</p>
+<h1>Připojení aplikace</h1>
+<p id="status" role="status" aria-live="polite">Ověřujeme požadavek…</p>
+<section id="login" hidden>
+<h2>Přihlaste se</h2>
+<p>Použijte svůj účet Learning Engine. Registrace nových účtů není povolena.</p>
+<form id="login-form">
+<label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required>
+<label for="password">Heslo</label><input id="password" type="password" autocomplete="current-password" required>
+<button id="sign-in" type="submit">Přihlásit se</button>
+</form>
+</section>
+<section id="consent" hidden>
+<h2><span id="client-name"></span> žádá o přístup</h2>
+<p class="muted">Název aplikace zadává její provozovatel. Povolte pouze aplikaci, jejíž připojení jste sami zahájili.</p>
+<dl><dt>Přihlášený účet</dt><dd id="account"></dd><dt>ID aplikace</dt><dd id="client-id"></dd><dt>Cíl přesměrování</dt><dd id="redirect"></dd></dl>
+<h3>Požadovaná oprávnění</h3><ul id="scopes"></ul>
+<div class="actions"><button id="deny" type="button" class="secondary">Odmítnout</button><button id="approve" type="button">Povolit přístup</button></div>
+<button id="sign-out" type="button" class="text-button">Použít jiný účet</button>
+</section>
+<p id="error" role="alert" hidden></p>
+<footer>Vývojové prostředí · Přístup udělujete pouze zvolené aplikaci.</footer>
+</main>
+</body>
+</html>
