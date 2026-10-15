@@ -4,7 +4,8 @@
   const params = new URLSearchParams(location.search);
   const ids = params.getAll('authorization_id');
   const authorizationId = ids[0];
-  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  // Supabase documents authorization_id as opaque (in practice 32 lowercase letters and digits); Supabase validates it.
+  const requestId = /^[A-Za-z0-9_-]{16,128}$/;
   let client;
   let pending = false;
   let ready = false;
@@ -97,7 +98,7 @@
     } catch { fail('Odhlášení se nezdařilo. Zkuste to znovu.'); }
     finally { busy(false); }
   });
-  if (ids.length !== 1 || !uuid.test(authorizationId || '')) {
+  if (ids.length !== 1 || !requestId.test(authorizationId || '')) {
     $('status').textContent = 'Tuto stránku otevřete z aplikace, kterou chcete připojit. Chybí platný požadavek na autorizaci.';
     return;
   }
