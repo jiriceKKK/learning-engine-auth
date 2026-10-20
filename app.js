@@ -105,8 +105,14 @@
   try {
     if (window.top !== window.self) throw new Error('Embedded page');
     // Session-only storage avoids leaving a login behind after this tab is closed.
-    client = window.supabase.createClient('https://lchqaaapvdthqkukpksm.supabase.co', 'sb_publishable_8WmIzUomXmck_4Gf53DrvA_5DUqLhmE', {
-      auth:{storage:sessionStorage, storageKey:'learning-engine-dev-consent', persistSession:true, autoRefreshToken:true, detectSessionInUrl:false}
+    // The page names its project (dev at the root, prod in prod/); its CSP connect-src must allow that URL.
+    const meta = name => document.querySelector(`meta[name="${name}"]`)?.getAttribute('content') || '';
+    const url = meta('le-supabase-url'), key = meta('le-publishable-key'), env = meta('le-env');
+    if (!/^https:\/\/[a-z]{20}\.supabase\.co$/.test(url) || !/^sb_publishable_[A-Za-z0-9_-]+$/.test(key) || !/^(dev|prod)$/.test(env)) {
+      throw new Error('Page configuration missing');
+    }
+    client = window.supabase.createClient(url, key, {
+      auth:{storage:sessionStorage, storageKey:`learning-engine-${env}-consent`, persistSession:true, autoRefreshToken:true, detectSessionInUrl:false}
     });
     loadRequest().catch(() => fail('Požadavek nelze načíst. Zahajte připojení znovu.'));
   } catch { $('status').textContent = 'Stránku nelze bezpečně otevřít. Otevřete ji přímo v prohlížeči a povolte úložiště této relace.'; }
